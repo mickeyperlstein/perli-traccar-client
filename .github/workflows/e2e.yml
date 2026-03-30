@@ -1,0 +1,56 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  repository_dispatch:
+    types: [backend-updated]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout FE
+        uses: actions/checkout@v4
+        with:
+          path: fe
+
+      - name: Checkout BE
+        uses: actions/checkout@v4
+        with:
+          repository: mickeyperlstein/perli-backend
+          token: ${{ secrets.GH_PAT }}
+          path: be
+
+      # TODO: replace with your actual BE startup command
+      - name: Start BE
+        run: |
+          cd be
+          # docker-compose up -d
+          # npm start &
+          # wait for it
+          echo "TODO: start backend"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: |
+          cd fe
+          flutter pub get
+
+      - name: Run unit tests
+        run: |
+          cd fe
+          flutter test
+
+      # Integration tests require an Android emulator.
+      # Uncomment when integration_test/ exists and emulator is configured.
+      # - name: Run integration tests (emulator)
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 33
+      #     script: cd fe && flutter test integration_test/

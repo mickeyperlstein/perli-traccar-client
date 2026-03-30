@@ -1,0 +1,21 @@
+# COPY THIS FILE into perli-backend/.github/workflows/trigger-fe-e2e.yml
+#
+# Requires: GH_PAT secret in the BE repo (repo-scoped Personal Access Token)
+
+name: Trigger FE E2E
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger perli-traccar-client E2E
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GH_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/mickeyperlstein/perli-traccar-client/dispatches \
+            -d '{"event_type":"backend-updated"}'
