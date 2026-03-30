@@ -8,6 +8,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:traccar_client/location_cache.dart';
 import 'package:traccar_client/preferences.dart';
+import 'package:traccar_client/scanner_service.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 class GeolocationService {
@@ -45,8 +46,11 @@ class GeolocationService {
     }
   }
 
+  // WHO: Antigravity Strategy Engine
+  // WHY: We intercept the raw background geolocation heartbeat to inject real-time WiFi/BT telemetry directly into the location payload before it is committed.
+  // HOW: By pushing execution natively to `ScannerService.sendTelemetry`, we keep the Geolocation Service clean.
   static Future<void> onHeartbeat(bg.HeartbeatEvent event) async {
-    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'heartbeat': true});
+    await ScannerService.sendTelemetry(isManual: false);
   }
 
   static Future<void> onLocation(bg.Location location) async {
