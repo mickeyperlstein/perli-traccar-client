@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Patrol: log_ui_test",
+      "request": "launch",
+      "type": "dart",
+      "program": "integration_test/log_ui_test.dart",
+      "deviceId": "emulator-5554",
+      "args": [
+        "--dart-define=PATROL_TEST_SERVER_PORT=8085",
+        "--dart-define=PATROL_APP_SERVER_PORT=8086"
+      ]
+    },
+    {
+      "name": "Patrol: scanner_test",
+      "request": "launch",
+      "type": "dart",
+      "program": "integration_test/scanner_test.dart",
+      "deviceId": "emulator-5554",
+      "args": [
+        "--dart-define=PATROL_TEST_SERVER_PORT=8085",
+        "--dart-define=PATROL_APP_SERVER_PORT=8086"
+      ]
+    }
+  ]
+}

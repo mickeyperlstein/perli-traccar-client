@@ -47,3 +47,13 @@ app.*.map.json
 # Flutter gen-l10n outputs
 lib/l10n/app_localizations.dart
 lib/l10n/app_localizations_*.dart
+
+# Patrol generates this bundle; do not commit (see file header in test_bundle.dart)
+patrol_test/
+
+# Test / tooling noise
+coverage/
+*.apk
+
+# Local VS Code user settings (machine-specific); launch.json may be committed
+.vscode/settings.json
