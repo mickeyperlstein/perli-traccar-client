@@ -1,0 +1,4 @@
+app_name: traccar_client
+test_directory: integration_test
+devices:
+  - emulator-5554

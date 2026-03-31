@@ -1,7 +1,7 @@
 name: traccar_client
 description: "Traccar Client"
 publish_to: 'none'
-version: 9.7.16+131
+version: 9.7.16+131.1
 
 environment:
   sdk: ^3.7.2
@@ -26,6 +26,9 @@ dependencies:
   flutter_secure_storage: ^10.0.0
   app_links: ^7.0.0
   app_settings: ^7.0.0
+
+patrol:
+  test_directory: integration_test
 
 dev_dependencies:
   flutter_test:

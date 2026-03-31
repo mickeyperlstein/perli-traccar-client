@@ -15,6 +15,13 @@ plugins {
 val backgroundGeolocation = project(":flutter_background_geolocation")
 apply { from("${backgroundGeolocation.projectDir}/background_geolocation.gradle") }
 
+// Disable purgeDebugResources for debug builds to speed up development
+tasks.withType<Delete> {
+    if (name.contains("purgeDebugResources") && !name.contains("Release")) {
+        enabled = false
+    }
+}
+
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("../../environment/key.properties")
 if (keystorePropertiesFile.exists()) {
@@ -43,6 +50,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        testInstrumentationRunner = "pl.leancode.patrol.PatrolJUnitRunner"
     }
 
     signingConfigs {

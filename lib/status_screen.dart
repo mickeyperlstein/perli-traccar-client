@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 
 import 'l10n/app_localizations.dart';
 
@@ -24,8 +25,8 @@ _LogLevel _classify(String line) {
   if (_fwPatterns.any((p) => line.contains(p))) return _LogLevel.fw;
 
   if (line.contains(' DEBUG ')) return _LogLevel.debug;
-  if (line.contains(' INFO '))  return _LogLevel.info;
-  if (line.contains(' WARN '))  return _LogLevel.warn;
+  if (line.contains(' INFO ')) return _LogLevel.info;
+  if (line.contains(' WARN ')) return _LogLevel.warn;
   if (line.contains(' ERROR ')) return _LogLevel.error;
 
   return _LogLevel.other;
@@ -33,12 +34,18 @@ _LogLevel _classify(String line) {
 
 Color _colorFor(_LogLevel level, bool dark) {
   switch (level) {
-    case _LogLevel.error: return Colors.red.shade300;
-    case _LogLevel.warn:  return Colors.orange.shade300;
-    case _LogLevel.info:  return dark ? Colors.white : Colors.black87;
-    case _LogLevel.debug: return Colors.grey.shade500;
-    case _LogLevel.fw:    return Colors.grey.shade600;
-    case _LogLevel.other: return Colors.grey.shade400;
+    case _LogLevel.error:
+      return Colors.red.shade300;
+    case _LogLevel.warn:
+      return Colors.orange.shade300;
+    case _LogLevel.info:
+      return dark ? Colors.white : Colors.black87;
+    case _LogLevel.debug:
+      return Colors.grey.shade500;
+    case _LogLevel.fw:
+      return Colors.grey.shade600;
+    case _LogLevel.other:
+      return Colors.grey.shade400;
   }
 }
 
@@ -89,20 +96,19 @@ class _StatusScreenState extends State<StatusScreen> {
   }
 
   Future<void> _refreshLogs() async {
-    final logs = await bg.Logger.getLog(bg.SQLQuery(
-      order: bg.SQLQuery.ORDER_DESC,
-      limit: 2000,
-    ));
+    final logs = await bg.Logger.getLog(
+      bg.SQLQuery(order: bg.SQLQuery.ORDER_DESC, limit: 2000),
+    );
     setState(() {
       _entries = _tagLines(logs.split('\n'));
     });
   }
 
   Future<void> _emailLogs() async {
-    await bg.Logger.emailLog("support@traccar.org", bg.SQLQuery(
-      order: bg.SQLQuery.ORDER_DESC,
-      limit: 25000,
-    ));
+    await bg.Logger.emailLog(
+      "support@traccar.org",
+      bg.SQLQuery(order: bg.SQLQuery.ORDER_DESC, limit: 25000),
+    );
   }
 
   Future<void> _clearLogs() async {
@@ -127,7 +133,7 @@ class _StatusScreenState extends State<StatusScreen> {
       child: FilterChip(
         label: Text(label, style: const TextStyle(fontSize: 11)),
         selected: on,
-        selectedColor: activeColor.withOpacity(0.25),
+        backgroundColor: on ? activeColor.withAlpha(64) : null,
         showCheckmark: false,
         labelStyle: TextStyle(color: on ? activeColor : Colors.grey),
         side: BorderSide(color: on ? activeColor : Colors.grey.shade600),
@@ -149,8 +155,8 @@ class _StatusScreenState extends State<StatusScreen> {
         title: Text(AppLocalizations.of(context)!.statusTitle),
         actions: [
           IconButton(icon: const Icon(Icons.refresh), onPressed: _refreshLogs),
-          IconButton(icon: const Icon(Icons.share),   onPressed: _emailLogs),
-          IconButton(icon: const Icon(Icons.delete),  onPressed: _clearLogs),
+          IconButton(icon: const Icon(Icons.share), onPressed: _emailLogs),
+          IconButton(icon: const Icon(Icons.delete), onPressed: _clearLogs),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(44),
@@ -160,10 +166,10 @@ class _StatusScreenState extends State<StatusScreen> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _filterButton(_LogLevel.fw,    'FW',    Colors.grey),
+                  _filterButton(_LogLevel.fw, 'FW', Colors.grey),
                   _filterButton(_LogLevel.debug, 'DEBUG', Colors.grey.shade400),
-                  _filterButton(_LogLevel.info,  'INFO',  Colors.blue),
-                  _filterButton(_LogLevel.warn,  'WARN',  Colors.orange),
+                  _filterButton(_LogLevel.info, 'INFO', Colors.blue),
+                  _filterButton(_LogLevel.warn, 'WARN', Colors.orange),
                   _filterButton(_LogLevel.error, 'ERROR', Colors.red),
                   const SizedBox(width: 8),
                   Text(
