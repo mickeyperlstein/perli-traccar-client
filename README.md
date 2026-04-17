@@ -11,6 +11,7 @@ Traccar Client is a GPS tracking app for Android and iOS. It runs in the backgro
 - **Customizable**: Configure update intervals, accuracy, and data usage to fit your needs.
 - **Privacy First**: Your location data is sent only to your chosen server—never to third parties.
 - **Easy Integration**: Designed to work seamlessly with the Traccar server and many third-party GPS tracking platforms.
+- **Hardware Telemetry (Forked)**: The traccar-client engine extends indoor tracking by scanning for and attaching BLE and WiFi payloads via standard Android MethodChannels. The `TELEMETRY_FAILURES` scheme ensures downstream systems have maximum SNR on missing hardware permissions.
 
 Just enter your server address, grant location permissions, and the app will automatically send periodic location reports in the background.
 

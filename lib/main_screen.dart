@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/preferences.dart';
+import 'package:traccar_client/scanner_service.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
@@ -146,9 +147,12 @@ class _MainScreenState extends State<MainScreen> {
               spacing: 8,
               children: [
                 FilledButton.tonal(
+                  // WHO: Antigravity Strategy Engine
+                  // WHY: We intercept the manual 'Send Location' button push to append the same hardware scanning context as the heartbeat.
+                  // HOW: By pushing execution synchronously down to the isolated `ScannerService.sendTelemetry(isManual: true)`.
                   onPressed: () async {
                     try {
-                      await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'manual': true});
+                      await ScannerService.sendTelemetry(isManual: true);
                     } on PlatformException catch (error) {
                       messengerKey.currentState?.showSnackBar(SnackBar(content: Text(error.message ?? error.code)));
                     }
